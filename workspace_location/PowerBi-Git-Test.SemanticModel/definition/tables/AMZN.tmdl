@@ -1,0 +1,82 @@
+table AMZN
+	lineageTag: a983f5c9-7345-4600-8aa4-a81b912f78dc
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f6a3ff8b-3f7e-4b60-b606-93806d80c623
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Open
+		dataType: int64
+		formatString: 0
+		lineageTag: fd7014e7-734c-4a5d-9891-5bdb593769df
+		summarizeBy: sum
+		sourceColumn: Open
+
+		annotation SummarizationSetBy = Automatic
+
+	column High
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c38ed6f-17f8-4a23-81d4-277c0cb9c414
+		summarizeBy: sum
+		sourceColumn: High
+
+		annotation SummarizationSetBy = Automatic
+
+	column Low
+		dataType: int64
+		formatString: 0
+		lineageTag: aa791b07-bacb-4907-a93d-87c3f86cfd62
+		summarizeBy: sum
+		sourceColumn: Low
+
+		annotation SummarizationSetBy = Automatic
+
+	column Close
+		dataType: int64
+		formatString: 0
+		lineageTag: 67ff8556-8faf-4bc7-b748-46eaaae1fcb3
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Adj Close'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a90a0c6-061b-4bc0-93a4-85a8fb700af4
+		summarizeBy: sum
+		sourceColumn: Adj Close
+
+		annotation SummarizationSetBy = Automatic
+
+	column Volume
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b0cc97f-1551-430e-890d-2e1efbdbe774
+		summarizeBy: sum
+		sourceColumn: Volume
+
+		annotation SummarizationSetBy = Automatic
+
+	partition AMZN = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\sergio.bachega\Downloads\PBI\GitHub\PowerBi-Git-Test\AMZN.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Date", type date}, {"Open", Int64.Type}, {"High", Int64.Type}, {"Low", Int64.Type}, {"Close", Int64.Type}, {"Adj Close", Int64.Type}, {"Volume", Int64.Type}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
